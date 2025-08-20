@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhishek Sharma - CV</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Global Styles */
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #3b82f6;
+            --dark-color: #1f2937;
+            --light-color: #f9fafb;
+            --gray-color: #6b7280;
+            --light-gray: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            color: var(--dark-color);
+            background-color: #f5f7fa;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            font-size: 13px;
+        }
+
+        .controls {
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 13px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn i {
+            margin-right: 6px;
+        }
+
+        /* CV Container - A4 size for printing */
+        .cv-container {
+            width: 210mm; /* A4 width */
+            height: 297mm; /* A4 height */
+            background: white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 12mm;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* CV Header */
+        .cv-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            margin: -12mm -12mm 15px -12mm; /* Counteract container padding */
+        }
+
+        .cv-header h1 {
+            font-size: 22px;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .cv-header .title {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+            font-size: 11px;
+        }
+
+        .contact-info div {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* CV Content */
+        .cv-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow: hidden;
+        }
+
+        .section {
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--light-gray);
+            position: relative;
+            font-weight: 600;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--primary-color);
+        }
+
+        .objective {
+            background: var(--light-color);
+            padding: 12px;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            border-left: 3px solid var(--primary-color);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .education-item, .project-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+        }
+
+        .education-item:last-child, .project-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .education-item h3, .project-item h3 {
+            color: var(--dark-color);
+            margin-bottom: 4px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .institute {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 3px;
+            display: block;
+            font-size: 12px;
+        }
+
+        .date {
+            color: var(--gray-color);
+            margin-bottom: 6px;
+            display: block;
+            font-size: 11px;
+        }
+
+        /* Skills */
+        .skills-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .skill-category {
+            margin-bottom: 8px;
+        }
+
+        .skill-category h3 {
+            color: var(--dark-color);
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .skill-item {
+            margin-bottom: 6px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .skill-item h4 {
+            color: var(--dark-color);
+            margin-right: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 100px;
+        }
+
+        .skill-item p {
+            color: var(--gray-color);
+            font-size: 11px;
+            flex: 1;
+        }
+
+        .project-features {
+            margin-top: 6px;
+        }
+
+        .project-features h4 {
+            color: var(--dark-color);
+            margin-bottom: 5px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .project-features ul {
+            list-style-type: disc;
+            padding-left: 18px;
+        }
+
+        .project-features li {
+            color: var(--gray-color);
+            margin-bottom: 3px;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        /* Experience section */
+        .experience {
+            font-size: 12px;
+            color: var(--gray-color);
+            padding: 5px 0;
+        }
+
+        /* Print-specific styles */
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+                height: auto;
+            }
+            
+            .cv-container {
+                box-shadow: none;
+                width: 100%;
+                height: auto;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .cv-header {
+                margin: 0;
+            }
+            
+            .controls {
+                display: none;
+            }
+            
+            .cv-content {
+                padding: 10px;
+            }
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .cv-container {
+                width: 100%;
+                height: auto;
+            }
+            
+            .cv-header h1 {
+                font-size: 20px;
+            }
+            
+            .cv-header .title {
+                font-size: 13px;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 6px;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button id="downloadBtn" class="btn btn-primary">
+            <i class="fas fa-download"></i> Download as PDF
+        </button>
+    </div>
+
+    <div id="cv" class="cv-container">
+        <div class="cv-header">
+            <h1>Abhishek Sharma</h1>
+            <div class="title">PHP Developer | Recent Computer Application Graduate</div>
+            <div class="contact-info">
+                <div>
+                    <i class="fas fa-envelope"></i>
+                    <span>abhishekshk30@gmail.com</span>
+                </div>
+                <div>
+                    <i class="fas fa-phone"></i>
+                    <span>+91 9023743914</span>
+                </div>
+                <div>
+                    <i class="fab fa-linkedin"></i>
+                    <span>linkedin.com/in/abhishek-sharma-b510572bb</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="cv-content">
+            <div class="section">
+                <div class="objective">
+                    <p>Recent Computer Application graduate with a strong foundation in PHP programming and software development principles. Eager to begin a career as a PHP Laravel Developer where I can apply my academic knowledge, project experience, and enthusiasm for coding to contribute to the success of a forward-thinking company.</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Education</h2>
+                <div class="education-item">
+                    <h3>Bachelor of Computer Applications</h3>
+                    <span class="institute">Navgujarat College of Computer Applications, Ahmedabad, Gujarat</span>
+                    <span class="date">Graduation Date: April 2024</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="skills-container">
+                    <div class="skill-category">
+                        <h3>Programming Languages</h3>
+                        <div class="skill-item">
+                            <h4>PHP:</h4>
+                            <p>Strong foundation in PHP programming</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>JavaScript:</h4>
+                            <p>Client-side scripting and interactivity</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>HTML5 & CSS3:</h4>
+                            <p>Web page structure and styling</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Java, C, C++:</h4>
+                            <p>Programming fundamentals</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Python:</h4>
+                            <p>Basic knowledge</p>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h3>Databases & Tools</h3>
+                        <div class="skill-item">
+                            <h4>MySQL:</h4>
+                            <p>Database management and querying</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Git:</h4>
+                            <p>Version control system</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Bootstrap:</h4>
+                            <p>Front-end framework</p>
+                        </div>
+                    </div>
+                    
+                    <div class="skill-category">
+                        <h3>Frameworks & OS</h3>
+                        <div class="skill-item">
+                            <h4>Laravel:</h4>
+                            <p>Currently learning PHP framework</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>ReactJS:</h4>
+                            <p>Currently learning JavaScript library</p>
+                        </div>
+                        <div class="skill-item">
+                            <h4>Windows & Linux:</h4>
+                            <p>Operating systems proficiency</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Experience</h2>
+                <div class="experience">
+                    <p>Fresher</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 class="section-title">Academic Project</h2>
+                <div class="project-item">
+                    <h3>E-commerce Website</h3>
+                    <div class="project-features">
+                        <h4>Project Details:</h4>
+                        <ul>
+                            <li>Developed a web application using PHP</li>
+                            <li>Implemented front-end using HTML, CSS, and JavaScript for a responsive user interface</li>
+                            <li>Integrated MySQL database for storing product and user information</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const downloadBtn = document.getElementById('downloadBtn');
+            const cv = document.getElementById('cv');
+            
+            downloadBtn.addEventListener('click', function() {
+                // Create a clone of the CV to avoid modifying the original during PDF generation
+                const cvClone = cv.cloneNode(true);
+                
+                // Options for PDF generation - A4 format
+                const options = {
+                    margin: 0,
+                    filename: 'Abhishek_Sharma_CV.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2,
+                        useCORS: true,
+                        logging: false
+                    },
+                    jsPDF: { 
+                        unit: 'mm', 
+                        format: 'a4', 
+                        orientation: 'portrait' 
+                    },
+                    pagebreak: { mode: 'avoid-all' }
+                };
+                
+                // Generate and download PDF
+                html2pdf().set(options).from(cvClone).save();
+                
+                // Show a brief notification
+                const originalText = downloadBtn.innerHTML;
+                downloadBtn.innerHTML = '<i class="fas fa-check"></i> Download Complete!';
+                downloadBtn.style.backgroundColor = '#10b981';
+                
+                setTimeout(() => {
+                    downloadBtn.innerHTML = originalText;
+                    downloadBtn.style.backgroundColor = '';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
